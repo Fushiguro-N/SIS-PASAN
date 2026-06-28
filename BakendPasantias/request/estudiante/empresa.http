@@ -1,0 +1,17 @@
+
+GET http://localhost:8080/api/empresas
+
+###
+POST http://localhost:8080/api/empresas
+Content-Type: application/json
+
+{
+  "nombre": "Tech Solutions S.A.C.",
+  "ruc": "20123456789",
+  "actividadEconomica": "Desarrollo de Software",
+  "direccion": "Av. Principal 123",
+  "ciudad": "Juliaca",
+  "telefono": "987654321",
+  "correoElectronico": "contacto@techsolutions.com",
+  "paginaWeb": "https://www.techsolutions.com"
+}

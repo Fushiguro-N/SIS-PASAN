@@ -1,0 +1,16 @@
+
+GET http://localhost:8080/api/estudiantes
+
+
+###
+POST  http://localhost:8080/api/estudiantes/registrar
+Content-Type: application/json
+
+{
+   "nombre": "Dani",
+   "apellido": "Quispe",
+   "codigoEstudiantil": "202420507",
+   "correoElectronicoPersonal": "danidaniel@gmail.com",
+   "correoElectronicoInstitucional": "danidaniel@upeu.edu.pe"
+
+}
