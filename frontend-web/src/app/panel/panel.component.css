@@ -1,0 +1,474 @@
+/* ==========================================================================
+   1. ESTRUCTURA PRINCIPAL DEL DASHBOARD (AJUSTADA)
+   ========================================================================== */
+.dashboard-layout {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #f8fafc;
+  font-family: sans-serif;
+}
+
+/* MENÚ LATERAL INTERNO (SIDEBAR) - FIJO E INMÓVIL */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  background-color: #0b1329;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 16px;
+  box-sizing: border-box;
+  z-index: 100;
+}
+
+.sidebar-brand { display: flex; align-items: center; gap: 12px; color: white; margin-bottom: 24px; }
+.brand-icon { font-size: 28px; color: #3b82f6; }
+.sidebar-brand h3 { margin: 0; font-size: 16px; }
+.sidebar-brand p { margin: 0; font-size: 10px; color: #64748b; }
+.sidebar-title { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; margin-bottom: 12px; padding-left: 8px; }
+
+/* MENÚ ITEMS */
+.sidebar-menu { display: flex; flex-direction: column; gap: 4px; flex-grow: 1; }
+.menu-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 8px;
+  font-size: 13px; font-weight: 600; color: #94a3b8; text-decoration: none; cursor: pointer; transition: all 0.2s;
+}
+.menu-item:hover, .menu-item.active { background: #1e293b; color: white; }
+.menu-item.disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* PERFIL DE USUARIO FOOTER */
+.sidebar-user { display: flex; align-items: center; gap: 10px; padding-top: 16px; border-top: 1px solid #1e293b; margin-top: auto; }
+.avatar-circle { width: 32px; height: 32px; background: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+.user-info { flex-grow: 1; }
+.user-info h4 { margin: 0; font-size: 12px; color: white; }
+.user-info p { margin: 0; font-size: 10px; color: #64748b; }
+.logout-icon-btn { background: none; border: none; color: #64748b; cursor: pointer; }
+.logout-icon-btn:hover { color: #ef4444; }
+
+/* ==========================================================================
+   2. ÁREA CENTRAL Y TOPBAR (ARREGLO DE ALINEACIÓN HORIZONTAL)
+   ========================================================================== */
+.content-area {
+  margin-left: 260px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  width: calc(100vw - 260px);
+}
+
+/* ==========================================================================
+   ALINEACIÓN EXACTA DE LA TOPBAR (BUSCADOR E ICONOS)
+   ========================================================================== */
+.topbar {
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Separa breadcrumbs a la izquierda y buscador a la derecha */
+  padding: 0 24px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+/* Contenedor unificado para la parte derecha de la barra superior */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* Espaciado fijo entre buscador, campana y tuerca */
+}
+
+.search-box-wrapper { position: relative; }
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 6px 12px;
+  border-radius: 8px;
+  gap: 8px;
+}
+.search-box input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 13px;
+  width: 180px;
+}
+
+/* ==========================================================================
+   SUGERENCIAS DEL BUSCADOR (topbar, funciona en cualquier vista)
+   ========================================================================== */
+.suggestions-dropdown {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 320px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  z-index: 150;
+  overflow: hidden;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.suggestion-item {
+  display: flex;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+}
+.suggestion-item:last-child { border-bottom: none; }
+.suggestion-item:hover { background: #f8fafc; }
+.suggestion-icon { font-size: 18px; color: #3b82f6; }
+.suggestion-title { margin: 0; font-size: 12px; font-weight: 600; color: #1e293b; }
+.suggestion-subtitle { margin: 2px 0 0 0; font-size: 11px; color: #94a3b8; }
+
+/* Reset de los botones con iconos para que no floten hacia arriba */
+.icon-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  font-size: 20px;
+  margin: 0; /* Evita heredar floats de layouts viejos */
+}
+.icon-btn:hover { color: #1e293b; }
+.badge-dot { position: absolute; top: 6px; right: 6px; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; }
+
+/* ==========================================================================
+   DROPDOWN DE NOTIFICACIONES (topbar)
+   ========================================================================== */
+.notif-wrapper { position: relative; }
+.notif-dropdown {
+  position: absolute;
+  top: 36px;
+  right: 0;
+  width: 280px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  z-index: 150;
+  overflow: hidden;
+}
+.notif-header { padding: 12px 16px; font-size: 13px; font-weight: 700; color: #0f172a; border-bottom: 1px solid #f1f5f9; }
+.notif-item { display: flex; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #f1f5f9; }
+.notif-item:last-child { border-bottom: none; }
+.notif-icon { font-size: 18px; color: #3b82f6; }
+.notif-text { margin: 0; font-size: 12px; color: #334155; }
+.notif-time { margin: 4px 0 0 0; font-size: 11px; color: #94a3b8; }
+
+/* ==========================================================================
+   ESTILO DE LA CUADRÍCULA DE GRÁFICOS (EVITA DUPLICACIÓN Y DEFORMACIONES)
+   ========================================================================== */
+.charts-grid-layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* El gráfico de barras toma 2 partes, la dona toma 1 parte */
+  gap: 20px;
+  align-items: stretch;
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.chart-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 24px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.chart-card h4 { margin: 0 0 16px 0; font-size: 14px; color: #1e293b; font-weight: 600; }
+.year-indicator { float: right; color: #94a3b8; font-size: 12px; }
+
+/* CONTENEDOR INTERNO DEL GRÁFICO DE BARRAS */
+.css-bar-chart {
+  display: flex;
+  height: 220px;
+  align-items: flex-end;
+  position: relative;
+  width: 100%;
+}
+
+.chart-axis-y {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color: #94a3b8;
+  font-size: 11px;
+  padding-right: 12px;
+  text-align: right;
+  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 24px; /* Alineación respecto al texto inferior de meses */
+}
+
+.bars-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 100%;
+  flex-grow: 1;
+  padding-bottom: 24px;
+  border-left: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.bar-group {
+  display: flex;
+  gap: 6px;
+  align-items: flex-end;
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+}
+
+.bar {
+  width: 16px;
+  border-radius: 4px 4px 0 0;
+  transition: opacity 0.2s;
+}
+.bar.col1 { background: #1e3a8a; } /* Color Azul oscuro */
+.bar.col2 { background: #06b6d4; } /* Color Celeste */
+
+.bar-group .label {
+  position: absolute;
+  bottom: -22px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: #64748b;
+}
+
+.topbar {
+  height: 60px;
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.breadcrumbs { font-size: 13px; color: #1e293b; }
+.breadcrumbs .muted { color: #94a3b8; }
+
+/* Contenedor derecho: Agrupa la barra de búsqueda junto a las acciones */
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #f1f5f9;
+  padding: 8px 14px;
+  border-radius: 8px;
+  gap: 8px;
+}
+.search-box input { border: none; background: transparent; outline: none; font-size: 13px; width: 180px; }
+
+/* Botones de acción alineados sin desborde */
+.icon-btn {
+  background: none;
+  border: none;
+  color: #64748b;
+  position: relative;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  font-size: 20px;
+}
+.icon-btn:hover { color: #1e293b; }
+.badge-dot { position: absolute; top: 4px; right: 4px; width: 6px; height: 6px; background: #ef4444; border-radius: 50%; }
+
+/* DETALLES DE SUBVISTAS */
+.sub-view { flex-grow: 1; padding: 24px; overflow-y: auto; box-sizing: border-box; }
+.view-header h2 { margin: 0; font-size: 22px; color: #0f172a; }
+.subtitle { margin: 4px 0 24px 0; font-size: 13px; color: #64748b; }
+
+/* ==========================================================================
+   3. REJILLA DE TARJETAS (KPI)
+   ========================================================================== */
+.metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.metric-card { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
+.metric-interactive { cursor: pointer; transition: transform 0.2s; }
+.metric-interactive:hover { transform: translateY(-2px); }
+.metric-info label { font-size: 11px; font-weight: 700; color: #64748b; }
+.metric-info h3 { margin: 6px 0; font-size: 26px; color: #0f172a; }
+.metric-info p { margin: 0; font-size: 12px; }
+.trend.up { color: #10b981; }
+.trend.orange { color: #f59e0b; }
+.metric-info p.trend.purple { color: #8b5cf6 !important; }
+
+.metric-icon { width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+.metric-icon.blue { background: #eff6ff; color: #3b82f6; }
+.metric-icon.green { background: #ecfdf5; color: #10b981; }
+.metric-icon.orange { background: #fffbeb; color: #f59e0b; }
+.metric-icon.purple { background: #f5f3ff; color: #8b5cf6; }
+
+/* ==========================================================================
+   4. SECCIÓN DE GRÁFICOS COMPACTA (BAR + DONUT EN PARALELO)
+   ========================================================================== */
+.charts-grid-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; align-items: stretch; }
+.chart-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; box-sizing: border-box; }
+.chart-card h4 { margin: 0 0 16px 0; font-size: 14px; color: #1e293b; }
+.year-indicator { float: right; color: #94a3b8; font-size: 12px; }
+
+/* GRÁFICO DE BARRAS */
+.css-bar-chart { display: flex; height: 200px; padding-top: 10px; position: relative; }
+.chart-axis-y { display: flex; flex-direction: column; justify-content: space-between; color: #94a3b8; font-size: 11px; padding-right: 12px; text-align: right; width: 20px; }
+
+.bars-container {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 200px;
+  flex-grow: 1;
+}
+
+.bar-group { display: flex; gap: 4px; align-items: flex-end; position: relative; height: 100%; width: 40px; cursor: pointer; }
+.bar { width: 20px !important; border-radius: 4px 4px 0 0; transition: opacity 0.2s; }
+.bar.col1 { background: #1e3a8a; }
+.bar.col2 { background: #06b6d4; }
+.bar-group .label { position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #64748b; }
+
+/* TOOLTIP RE-ESTILIZADO PARA EVITAR DESBORDES NEGROS */
+.bar-chart-tooltip {
+  position: absolute;
+  z-index: 50;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  pointer-events: none;
+  transition: top 0.1s ease, left 0.1s ease;
+  min-width: 130px;
+}
+
+.tooltip-title { font-weight: 600; font-size: 14px; color: #1e293b; margin-bottom: 6px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 4px; }
+.tooltip-row { display: flex; justify-content: space-between; font-size: 12px; margin-top: 3px; gap: 10px; }
+.tooltip-row.sol { color: #1e3a8a; }
+.tooltip-row.apr { color: #0d9488; }
+
+/* GRÁFICO DE DONA */
+.donut-container { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.donut-chart-wrapper { position: relative; display: block; margin: 16px auto; width: 140px; height: 140px; }
+.donut-svg { transform: rotate(-90deg); border-radius: 50%; width: 100%; height: 100%; overflow: visible; }
+.donut-segment { stroke-width: 8 !important; transition: stroke-width 0.3s ease; }
+.donut-segment:hover { stroke-width: 10 !important; cursor: pointer; }
+
+.donut-legend { width: 100%; display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+.legend-item { display: flex; align-items: center; font-size: 12px; color: #64748b; padding: 4px; border-radius: 4px; transition: background 0.2s; }
+.legend-item:hover { background: #f1f5f9; }
+
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+.dot.green { background: #10b981; }
+.dot.orange { background: #f59e0b; }
+.dot.blue { background: #94a3b8; }
+.dot.red { background: #ef4444; }
+.legend-label { flex-grow: 1; }
+.legend-value { font-weight: bold; color: #1e293b; }
+
+/* ==========================================================================
+   5. SECCIÓN DE SOLICITUDES RECIENTES
+   ========================================================================== */
+.recent-requests-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 24px; margin-top: 24px; box-sizing: border-box; }
+.recent-requests-card h3 { margin: 0 0 20px 0; font-size: 16px; color: #0f172a; font-weight: 600; }
+.requests-list { display: flex; flex-direction: column; }
+
+.request-item {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  margin: 0 -16px;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.request-item:hover { background-color: #f1f5f9; }
+.request-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+.request-details { flex-grow: 1; }
+.request-details h4 { margin: 0 0 4px 0; font-size: 14px; color: #0f172a; font-weight: 600; }
+.request-details p { margin: 0; font-size: 12px; color: #64748b; font-family: monospace; }
+
+.request-status { display: flex; align-items: center; gap: 24px; }
+.request-date { font-size: 12px; color: #94a3b8; min-width: 80px; text-align: right; font-family: monospace; }
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  width: 110px;
+  box-sizing: border-box;
+}
+.status-badge span:not(.status-icon) { flex-grow: 1; text-align: center; }
+.status-icon { font-size: 16px !important; }
+
+.status-badge.approved { background-color: #ecfdf5; color: #10b981; border: 1px solid #a7f3d0; }
+.status-badge.review { background-color: #fffbeb; color: #f59e0b; border: 1px solid #fde68a; }
+.status-badge.pending { background-color: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+.status-badge.rejected { background-color: #fef2f2; color: #ef4444; border: 1px solid #fca5a5; }
+
+.font-avatar { font-family: monospace; background: #e0f2fe; color: #0369a1; flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.review-avatar { background: #fef3c7; color: #b45309; }
+.pending-avatar { background: #f1f5f9; color: #475569; }
+.rejected-avatar { background: #fee2e2; color: #b91c1c; }
+.approved-avatar { background: #dcfce7; color: #15803d; }
+
+/* ==========================================================================
+   6. SECCIONES DE FORMULARIOS Y TABLAS GENERALES
+   ========================================================================== */
+.view-header-row { margin-bottom: 20px; }
+.solicitudes-flex-layout { display: flex; gap: 24px; align-items: flex-start; }
+.settings-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; width: 320px; flex-shrink: 0; }
+.input-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.input-group label { font-size: 10px; font-weight: bold; color: #64748b; }
+.gray-input { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; outline: none; }
+.submit-btn { width: 100%; background: #1e3a8a; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 8px; }
+
+.data-table { flex-grow: 1; background: white; border: 1px solid #e2e8f0; border-collapse: collapse; border-radius: 8px; overflow: hidden; }
+.data-table th, .data-table td { padding: 12px 16px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+.data-table th { background: #f8fafc; color: #64748b; font-weight: 600; }
+.code-font { font-family: monospace; font-weight: bold; color: #64748b; }
+.sub-code { font-size: 11px; color: #94a3b8; }
+
+.companies-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.company-card { background: white; border: 1px solid #e2e8f0; padding: 16px; border-radius: 12px; }
+.comp-header { display: flex; justify-content: space-between; align-items: center; }
+.comp-header h4 { margin: 0; font-size: 14px; }
+.comp-location { font-size: 11px; color: #94a3b8; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; }
+.comp-sub { font-size: 12px; color: #64748b; margin: 4px 0 12px 0; }
+.progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.progress-fill { height: 100%; background: #3b82f6; }
+.comp-slots { margin: 0; font-size: 11px; color: #64748b; font-weight: 500; }

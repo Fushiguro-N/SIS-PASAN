@@ -1,0 +1,90 @@
+<!-- Sin botón de alta: todas las solicitudes las crea el propio estudiante
+     desde "Postular a Práctica"; el admin solo revisa y cambia su estado. -->
+<div class="view-header-container">
+  <div>
+    <h2>Solicitudes de Pasantía</h2>
+    <p class="subtitle">{{ solicitudesFiltradas.length }} solicitudes &nbsp;•&nbsp; Semestre 2026-I</p>
+  </div>
+</div>
+
+<div class="filter-tabs">
+  <button (click)="filtrar('Todos')" [class.active]="filtroActivo === 'Todos'">Todos</button>
+  <button (click)="filtrar('Aprobado')" [class.active]="filtroActivo === 'Aprobado'">Aprobado</button>
+  <button (click)="filtrar('En Revisión')" [class.active]="filtroActivo === 'En Revisión'">En Revisión</button>
+  <button (click)="filtrar('Pendiente')" [class.active]="filtroActivo === 'Pendiente'">Pendiente</button>
+  <button (click)="filtrar('Rechazado')" [class.active]="filtroActivo === 'Rechazado'">Rechazado</button>
+</div>
+
+<div class="table-responsive-box">
+  <table class="solicitudes-table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>ESTUDIANTE</th>
+      <th>EMPRESA</th>
+      <th>TUTOR</th>
+      <th>ESTADO</th>
+      <th>FECHA</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Toda la fila es clickeable: abre el modal con la ficha completa del estudiante -->
+    <tr *ngFor="let sol of solicitudesFiltradas" class="table-row-interactive" (click)="verDetalle(sol)">
+      <td class="id-link">{{ sol.id }}</td>
+      <td>
+        <div class="student-profile">
+          <div class="avatar-circle font-avatar" [ngClass]="sol.css + '-avatar'">
+            {{ sol.iniciales }}
+          </div>
+          <div>
+            <div class="student-name">{{ sol.estudiante }}</div>
+            <div class="student-code">{{ sol.codigo }}</div>
+          </div>
+        </div>
+      </td>
+      <td class="text-dark">{{ sol.empresa }}</td>
+      <td class="text-muted font-mono">{{ sol.tutor }}</td>
+      <td>
+          <span class="status-badge" [ngClass]="sol.css">
+            <span class="material-symbols-outlined status-icon">
+              {{ sol.css === 'approved' ? 'check_circle' : sol.css === 'review' ? 'schedule' : sol.css === 'pending' ? 'info' : 'cancel' }}
+            </span>
+            <span>{{ sol.estado }}</span>
+          </span>
+      </td>
+      <td class="text-muted">{{ sol.fecha }}</td>
+      <td class="text-center">
+        <button class="action-dots-btn" (click)="verDetalle(sol); $event.stopPropagation()">
+          <span class="material-symbols-outlined">more_horiz</span>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Sin resultados tras aplicar el filtro de estado y/o el buscador del topbar -->
+  <p *ngIf="solicitudesFiltradas.length === 0" class="text-muted" style="padding: 24px; text-align: center;">
+    No se encontraron solicitudes con los filtros aplicados.
+  </p>
+
+  <div class="table-pagination">
+    <div class="pagination-info">
+      Mostrando <span>{{ solicitudesFiltradas.length }}</span> de <span>{{ solicitudesOriginales.length }}</span>
+    </div>
+    <div class="pagination-controls">
+      <button type="button" class="btn-pag" disabled>Anterior</button>
+      <button type="button" class="btn-pag active">1</button>
+      <button type="button" class="btn-pag" disabled>Siguiente</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de ficha completa del estudiante, solo se pinta si hay una solicitud seleccionada -->
+<app-solicitud-detalle
+  *ngIf="solicitudSeleccionada"
+  [solicitud]="solicitudSeleccionada"
+  [esAdmin]="true"
+  (cerrar)="cerrarDetalle()"
+  (cambiarEstado)="onCambiarEstado($event)">
+</app-solicitud-detalle>

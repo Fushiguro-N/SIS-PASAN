@@ -1,0 +1,91 @@
+.view-header-container { margin-bottom: 24px; }
+.view-header-container h2 { font-size: 24px; font-weight: 700; color: #0f172a; margin: 0; }
+.subtitle { font-size: 13px; color: #64748b; margin: 4px 0 0 0; }
+
+.docs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.doc-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.doc-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+
+.tipo-badge {
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.doc-title { margin: 0 0 4px 0; font-size: 15px; font-weight: 600; color: #0f172a; }
+.doc-student { margin: 0 0 14px 0; font-size: 13px; color: #64748b; }
+
+.doc-meta { display: flex; justify-content: space-between; font-size: 12px; color: #94a3b8; font-family: monospace; margin-bottom: 4px; }
+
+/* Botones ocultos por defecto: aparecen al pasar el cursor por la tarjeta */
+.doc-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease, opacity 0.2s ease, margin-top 0.2s ease;
+}
+.doc-card:hover .doc-actions {
+  max-height: 60px;
+  opacity: 1;
+  margin-top: 14px;
+}
+
+.doc-btn {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: #f8fafc;
+  color: #475569;
+  white-space: nowrap;
+}
+.doc-btn .material-symbols-outlined { font-size: 16px; }
+.doc-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.doc-btn.ver { border-color: #cbd5e1; }
+.doc-btn.aprobar:not(:disabled) { background-color: #ecfdf5; color: #10b981; border-color: #a7f3d0; }
+.doc-btn.rechazar:not(:disabled) { background-color: #fef2f2; color: #ef4444; border-color: #fca5a5; }
+
+/* Badges de estado (mismos colores que en Solicitudes) */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.status-icon { font-size: 14px !important; }
+.status-badge.approved { background-color: #ecfdf5; color: #10b981; border: 1px solid #a7f3d0; }
+.status-badge.review { background-color: #fffbeb; color: #f59e0b; border: 1px solid #fde68a; }
+.status-badge.pending { background-color: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+.status-badge.rejected { background-color: #fef2f2; color: #ef4444; border: 1px solid #fca5a5; }
+
+.text-muted { color: #64748b; }

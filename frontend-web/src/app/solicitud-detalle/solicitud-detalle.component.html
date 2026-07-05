@@ -1,0 +1,111 @@
+<!-- Fondo oscuro semitransparente: al hacer click afuera de la tarjeta, se cierra el modal -->
+<div class="modal-backdrop" (click)="onCerrar()">
+  <!-- (click) con stopPropagation implícito por el (click) del botón: se detiene con $event -->
+  <div class="modal-card" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="student-profile">
+        <div class="avatar-circle font-avatar" [ngClass]="solicitud.css + '-avatar'">
+          {{ solicitud.iniciales }}
+        </div>
+        <div>
+          <h3>{{ solicitud.estudiante }}</h3>
+          <p class="student-code">{{ solicitud.codigo }}</p>
+        </div>
+      </div>
+      <button class="close-btn" (click)="onCerrar()">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <span class="status-badge" [ngClass]="solicitud.css">
+        <span class="material-symbols-outlined status-icon">
+          {{ solicitud.css === 'approved' ? 'check_circle' : solicitud.css === 'review' ? 'schedule' : solicitud.css === 'pending' ? 'info' : 'cancel' }}
+        </span>
+        <span>{{ solicitud.estado }}</span>
+      </span>
+
+      <div class="detail-grid">
+        <div class="detail-item">
+          <label>ID DE SOLICITUD</label>
+          <p>{{ solicitud.id }}</p>
+        </div>
+        <div class="detail-item">
+          <label>FECHA DE SOLICITUD</label>
+          <p>{{ solicitud.fecha }}</p>
+        </div>
+        <div class="detail-item">
+          <label>CARRERA</label>
+          <p>{{ solicitud.carrera }}</p>
+        </div>
+        <div class="detail-item">
+          <label>CICLO ACTUAL</label>
+          <p>{{ solicitud.ciclo }}</p>
+        </div>
+        <div class="detail-item">
+          <label>CORREO INSTITUCIONAL</label>
+          <p>{{ solicitud.correo }}</p>
+        </div>
+        <div class="detail-item">
+          <label>TELÉFONO</label>
+          <p>{{ solicitud.telefono }}</p>
+        </div>
+        <div class="detail-item">
+          <label>EMPRESA</label>
+          <p>{{ solicitud.empresa }}</p>
+        </div>
+        <div class="detail-item">
+          <label>TUTOR ASIGNADO</label>
+          <p>{{ solicitud.tutor }}</p>
+        </div>
+      </div>
+
+      <!-- Documentos del estudiante: CV, certificado de inglés, diploma y
+           logros, con el estado real que tengan en DocumentosService -->
+      <div class="docs-section">
+        <p class="actions-label">DOCUMENTOS DEL ESTUDIANTE</p>
+        <div class="docs-status-list">
+          <div class="doc-status-item" *ngFor="let doc of documentosEstudiante">
+            <span class="material-symbols-outlined doc-status-icon" [ngClass]="doc.registrado ? 'icon-ok' : 'icon-pending'">
+              {{ doc.registrado ? 'check_circle' : 'radio_button_unchecked' }}
+            </span>
+            <span class="doc-status-tipo">{{ doc.tipo }}</span>
+            <span class="doc-status-estado">{{ doc.estado }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones del administrador: cambian el estado de la solicitud en el
+           servicio compartido, así el estudiante ve el nuevo estado al instante -->
+      <div class="admin-actions" *ngIf="esAdmin">
+        <p class="actions-label">CAMBIAR ESTADO DE LA SOLICITUD</p>
+        <div class="actions-row">
+          <button
+            class="action-btn approve"
+            [disabled]="solicitud.estado === 'Aprobado'"
+            (click)="onCambiarEstado('Aprobado')">
+            <span class="material-symbols-outlined">check_circle</span> Aprobar
+          </button>
+          <button
+            class="action-btn review"
+            [disabled]="solicitud.estado === 'En Revisión'"
+            (click)="onCambiarEstado('En Revisión')">
+            <span class="material-symbols-outlined">schedule</span> En Revisión
+          </button>
+          <button
+            class="action-btn pending"
+            [disabled]="solicitud.estado === 'Pendiente'"
+            (click)="onCambiarEstado('Pendiente')">
+            <span class="material-symbols-outlined">info</span> Pendiente
+          </button>
+          <button
+            class="action-btn reject"
+            [disabled]="solicitud.estado === 'Rechazado'"
+            (click)="onCambiarEstado('Rechazado')">
+            <span class="material-symbols-outlined">cancel</span> Rechazar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

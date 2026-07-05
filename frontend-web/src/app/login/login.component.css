@@ -1,0 +1,373 @@
+/* ==========================================================================
+   Estructura general de dos columnas fijas
+   ========================================================================== */
+.login-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8fafc;
+}
+
+/* ==========================================
+   Sección izquierda: Hero / Banner Azul
+   ========================================== */
+.login-hero {
+  flex: 1.1;
+  background: radial-gradient(circle at top left, #0d3875 0%, #051636 100%);
+  padding: 56px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cuadrícula técnica sutil */
+.login-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 45px 45px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.brand, .hero-content, .hero-stats, .hero-footer {
+  position: relative;
+  z-index: 2;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-icon {
+  background: #0091ff;
+  padding: 8px;
+  border-radius: 10px;
+  color: white;
+  font-size: 24px;
+}
+
+.brand h3 {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.brand p {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+}
+
+.hero-content {
+  max-width: 540px;
+  margin-top: 40px;
+}
+
+.hero-content h1 {
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+}
+
+.hero-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.hero-stats {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+  margin-bottom: 48px;
+}
+
+.stat-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 24px 20px;
+  flex: 1;
+  backdrop-filter: blur(4px);
+}
+
+.stat-box span {
+  font-size: 22px;
+  color: #0091ff;
+  margin-bottom: 16px;
+  display: block;
+}
+
+.stat-box h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: white;
+}
+
+.stat-box p {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.hero-footer {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* ==========================================
+   Sección derecha: Panel de Formulario
+   ========================================== */
+.login-form-panel {
+  flex: 0.9;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  padding: 56px;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-tabs {
+  display: flex;
+  background: #eef2f6;
+  padding: 4px;
+  border-radius: 10px;
+  margin-bottom: 40px;
+  width: 280px;
+}
+
+.tab-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.tab-btn.active {
+  background: white;
+  color: #0b2265;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 420px;
+}
+
+.form-wrapper h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #0b1a30;
+  margin-bottom: 10px;
+  letter-spacing: -0.5px;
+}
+
+.form-wrapper .subtitle {
+  color: #677788;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.google-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: white;
+  border: 1px solid #e2e8f0;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #0b1a30;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.google-btn img {
+  width: 18px;
+  height: 18px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #718096;
+  font-size: 12px;
+  margin: 32px 0;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #e2e8f0;
+}
+.divider::before { margin-right: 14px; }
+.divider::after { margin-left: 14px; }
+
+/* Agrupa dos campos por fila (ej. Nombres + Apellidos) para que el
+   formulario de registro no sea una sola columna larga */
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-row .input-group {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Inputs e Iconos alineados perfectamente */
+.input-group {
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input-group label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #718096;
+  letter-spacing: 0.8px;
+}
+
+.forgot-link {
+  font-size: 12px;
+  color: #0066ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.input-icon-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* El truco del posicionamiento absoluto para fijar tus Material Icons */
+.input-icon-wrapper .material-symbols-outlined {
+  position: absolute;
+  left: 16px;
+  color: #a0aec0;
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.input-icon-wrapper .toggle-password {
+  position: absolute;
+  right: 18px;
+  font-size: 13px;
+  color: #718096;
+  cursor: pointer; /* Cambia el cursor a una mano cliqueable */
+  font-weight: 500;
+  z-index: 10; /* Eleva el botón por encima del input para asegurar que reciba el click */
+  user-select: none; /* Evita que el texto se seleccione de color azul al darle clicks seguidos */
+}
+
+.input-icon-wrapper input {
+  width: 100%;
+  padding: 15px 16px 15px 48px; /* Padding izquierdo para no pisar el icono */
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f1f5f9;
+  font-size: 15px;
+  color: #0b1a30;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-icon-wrapper input:focus {
+  border-color: #1a56db;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+}
+
+/* Botón de ingreso */
+.submit-btn {
+  width: 100%;
+  background: #1d3b8a;
+  color: white;
+  border: none;
+  padding: 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.submit-btn .material-symbols-outlined {
+  font-size: 18px;
+}
+
+/* Credenciales de prueba inferiores */
+.test-credentials {
+  margin-top: 36px;
+  background: #eef2f6;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 18px 22px;
+}
+
+.test-credentials h4 {
+  font-size: 11px;
+  font-weight: 700;
+  color: #718096;
+  margin-bottom: 12px;
+  letter-spacing: 0.8px;
+}
+
+.cred-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin-bottom: 8px;
+  color: #4a5568;
+}
+
+.cred-row span:first-child {
+  color: #718096;
+}
+
+.code-font {
+  font-family: Menlo, Monaco, Consolas, monospace;
+  color: #2d3748;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .login-hero { display: none; }
+  .login-form-panel { flex: 1; padding: 32px 20px; }
+}

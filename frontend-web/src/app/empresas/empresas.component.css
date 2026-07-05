@@ -1,0 +1,135 @@
+.companies-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.btn-primary-add {
+  background: #1e3a8a; color: white; border: none; padding: 10px 16px;
+  border-radius: 8px; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary-add:hover { background: #1d4ed8; }
+
+.companies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 20px;
+}
+
+.company-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.comp-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.comp-header h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
+.comp-location-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.dot-status-active {
+  width: 7px;
+  height: 7px;
+  background-color: #10b981;
+  border-radius: 50%;
+}
+
+.comp-sub {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 4px 0 20px 0;
+}
+
+.comp-occupation-container { margin-bottom: 14px; }
+
+.occupation-label {
+  font-size: 13px;
+  color: #64748b;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.progress-bar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.progress-bar {
+  background: #f1f5f9;
+  border-radius: 9999px;
+  height: 8px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s ease;
+}
+
+.progress-green { background-color: #10b981; }
+.progress-orange { background-color: #f59e0b; }
+
+.slots-counter {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  min-width: 30px;
+  text-align: right;
+}
+
+.comp-slots-msg {
+  font-size: 14px;
+  font-weight: 500;
+  color: #10b981;
+  margin: 0 0 16px 0;
+}
+
+.comp-slots-msg.full { color: #ef4444; }
+
+.comp-footer-contact {
+  font-size: 13px;
+  color: #94a3b8;
+  border-top: 1px dashed #e2e8f0;
+  padding-top: 12px;
+  font-family: monospace;
+}
+
+/* ==========================================================================
+   FORMULARIO "AGREGAR EMPRESA"
+   ========================================================================== */
+.add-form-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.form-row { display: flex; gap: 16px; }
+.form-row .input-group { flex: 1; }
+.input-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.input-group label { font-size: 10px; font-weight: bold; color: #64748b; }
+.gray-input { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; outline: none; width: 100%; box-sizing: border-box; }

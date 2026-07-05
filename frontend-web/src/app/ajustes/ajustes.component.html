@@ -1,0 +1,54 @@
+<div class="view-header-container">
+  <h2>Ajustes de Cuenta</h2>
+  <p class="subtitle">Modifica tus datos de perfil</p>
+</div>
+
+<!-- FORMULARIO ADMINISTRADOR -->
+<div class="settings-card" *ngIf="esAdmin">
+  <form (ngSubmit)="guardarAdmin()">
+    <div class="input-group">
+      <label>NOMBRE COMPLETO</label>
+      <input class="gray-input" type="text" [(ngModel)]="perfilAdmin.nombre" name="nombre" required>
+    </div>
+    <div class="input-group">
+      <label>CORREO INSTITUCIONAL</label>
+      <input class="gray-input" type="email" [(ngModel)]="perfilAdmin.correo" name="correo" required>
+    </div>
+    <div class="input-group">
+      <label>TELÉFONO</label>
+      <input class="gray-input" type="text" [(ngModel)]="perfilAdmin.telefono" name="telefono" placeholder="987 654 321">
+    </div>
+    <div class="input-group">
+      <label>CARGO</label>
+      <input class="gray-input" type="text" [(ngModel)]="perfilAdmin.cargo" name="cargo">
+    </div>
+    <button type="submit" class="submit-btn">Guardar Cambios</button>
+  </form>
+</div>
+
+<!-- FORMULARIO ESTUDIANTE -->
+<div class="settings-card" *ngIf="!esAdmin">
+  <form (ngSubmit)="guardarEstudiante()">
+    <div class="input-group">
+      <label>CÓDIGO UNIVERSITARIO</label>
+      <input class="gray-input" type="text" [ngModel]="perfilEstudiante.codigo" name="codigo" disabled>
+    </div>
+    <div class="input-group">
+      <label>NOMBRE COMPLETO</label>
+      <input class="gray-input" type="text" [(ngModel)]="perfilEstudiante.nombre" name="nombre" placeholder="Ej: Juan Pérez Ríos" required>
+    </div>
+    <div class="input-group">
+      <label>CORREO INSTITUCIONAL</label>
+      <input class="gray-input" type="email" [(ngModel)]="perfilEstudiante.correo" name="correo" placeholder="usuario@upeu.edu.pe" required>
+    </div>
+    <div class="input-group">
+      <label>CARRERA</label>
+      <input class="gray-input" type="text" [ngModel]="perfilEstudiante.carrera" name="carrera" disabled>
+    </div>
+    <div class="input-group">
+      <label>CICLO ACTUAL</label>
+      <input class="gray-input" type="text" [(ngModel)]="perfilEstudiante.ciclo" name="ciclo">
+    </div>
+    <button type="submit" class="submit-btn">Guardar Cambios</button>
+  </form>
+</div>
