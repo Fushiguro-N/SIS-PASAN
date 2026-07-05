@@ -1,0 +1,47 @@
+<div class="view-header-container">
+  <h2>Reportes</h2>
+  <p class="subtitle">Resumen de ocupación por empresa y solicitudes por ciclo — Escuela de Administración</p>
+</div>
+
+<div class="metrics-grid">
+  <div class="metric-card">
+    <div class="metric-info">
+      <label>TOTAL SOLICITUDES</label>
+      <h3>{{ totalSolicitudes }}</h3>
+    </div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-info">
+      <label>TASA DE APROBACIÓN</label>
+      <h3>{{ tasaAprobacion }}%</h3>
+    </div>
+  </div>
+  <div class="metric-card">
+    <div class="metric-info">
+      <label>EMPRESAS ALIADAS</label>
+      <h3>{{ reportePorEmpresa.length }}</h3>
+    </div>
+  </div>
+</div>
+
+<div class="report-card">
+  <h3>Ocupación por Empresa</h3>
+  <div class="report-row" *ngFor="let r of reportePorEmpresa">
+    <span class="report-label">{{ r.empresa }}</span>
+    <div class="report-bar-wrapper">
+      <div class="report-bar">
+        <div class="report-bar-fill" [style.width]="porcentaje(r.ocupadas, r.total) + '%'"></div>
+      </div>
+      <span class="report-value">{{ r.ocupadas }}/{{ r.total }}</span>
+    </div>
+  </div>
+</div>
+
+<div class="report-card">
+  <h3>Solicitudes por Ciclo</h3>
+  <div class="report-row" *ngFor="let r of reportePorCiclo">
+    <span class="report-label">Ciclo {{ r.ciclo }}</span>
+    <span class="report-value">{{ r.cantidad }} estudiantes</span>
+  </div>
+  <p *ngIf="reportePorCiclo.length === 0" class="report-label">Aún no hay ciclos registrados.</p>
+</div>

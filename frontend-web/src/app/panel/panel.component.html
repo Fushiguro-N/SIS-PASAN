@@ -1,0 +1,509 @@
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="material-symbols-outlined brand-icon">menu_book</span>
+      <div>
+        <h3>SIS-PASAN</h3>
+        <p>{{ esAdmin ? 'ADMINISTRATION' : 'ESTUDIANTE' }}</p>
+      </div>
+    </div>
+
+    <p class="sidebar-title">Sistema</p>
+
+    <!-- MENÚ ADMINISTRADOR -->
+    <nav class="sidebar-menu" *ngIf="esAdmin">
+      <a (click)="navegarA('dashboard')" class="menu-item" [class.active]="currentView === 'dashboard'">
+        <span class="material-symbols-outlined">dashboard</span> Dashboard
+      </a>
+      <a (click)="navegarA('solicitudes')" class="menu-item" [class.active]="currentView === 'solicitudes'">
+        <span class="material-symbols-outlined">assignment</span> Solicitudes
+      </a>
+      <a (click)="navegarA('documentos-admin')" class="menu-item" [class.active]="currentView === 'documentos-admin'">
+        <span class="material-symbols-outlined">description</span> Documentos
+      </a>
+      <a (click)="navegarA('empresas')" class="menu-item" [class.active]="currentView === 'empresas'">
+        <span class="material-symbols-outlined">corporate_fare</span> Empresas
+      </a>
+      <a (click)="navegarA('usuarios')" class="menu-item" [class.active]="currentView === 'usuarios'">
+        <span class="material-symbols-outlined">group</span> Usuarios
+      </a>
+      <a (click)="navegarA('docentes')" class="menu-item" [class.active]="currentView === 'docentes'">
+        <span class="material-symbols-outlined">school</span> Docentes
+      </a>
+      <a (click)="navegarA('reportes')" class="menu-item" [class.active]="currentView === 'reportes'">
+        <span class="material-symbols-outlined">trending_up</span> Reportes
+      </a>
+      <a (click)="navegarA('ajustes')" class="menu-item" [class.active]="currentView === 'ajustes'">
+        <span class="material-symbols-outlined">settings</span> Ajustes
+      </a>
+    </nav>
+
+    <!-- MENÚ ESTUDIANTE -->
+    <nav class="sidebar-menu" *ngIf="!esAdmin">
+      <a (click)="navegarA('dashboard')" class="menu-item" [class.active]="currentView === 'dashboard'">
+        <span class="material-symbols-outlined">dashboard</span> Mi Panel
+      </a>
+      <a (click)="navegarA('postular')" class="menu-item" [class.active]="currentView === 'postular'">
+        <span class="material-symbols-outlined">edit_document</span> Postular a Práctica
+      </a>
+      <a (click)="navegarA('empresas')" class="menu-item" [class.active]="currentView === 'empresas'">
+        <span class="material-symbols-outlined">corporate_fare</span> Empresas Aliadas
+      </a>
+      <a (click)="navegarA('documentos')" class="menu-item" [class.active]="currentView === 'documentos'">
+        <span class="material-symbols-outlined">upload_file</span> Mis Documentos
+      </a>
+      <a (click)="navegarA('ajustes')" class="menu-item" [class.active]="currentView === 'ajustes'">
+        <span class="material-symbols-outlined">settings</span> Ajustes
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="avatar-circle">{{ esAdmin ? 'AG' : (nombreUsuario ? nombreUsuario.substring(0, 2).toUpperCase() : 'ES') }}</div>
+      <div class="user-info">
+        <h4>{{ esAdmin ? 'Administrador General' : (nombreUsuario || 'Estudiante') }}</h4>
+        <p>{{ esAdmin ? 'Administrador' : 'Estudiante' }}</p>
+      </div>
+      <button (click)="emitLogout()" class="logout-icon-btn">
+        <span class="material-symbols-outlined">logout</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="content-area">
+
+    <header class="topbar">
+      <div class="breadcrumbs">
+        <span class="muted">UPeU</span> &gt;
+        <span style="font-weight: 600;">{{ tituloVistaActual }}</span>
+      </div>
+
+      <div class="topbar-actions">
+        <!-- Buscador: filtra en vivo la lista de la vista activa (Solicitudes,
+             Empresas, Usuarios, Documentos) y, además, funciona desde
+             CUALQUIER vista (incluido el Dashboard) mostrando sugerencias
+             de solicitudes/empresas; al hacer click en una, te lleva ahí. -->
+        <div class="search-box-wrapper">
+          <div class="search-box">
+            <span class="material-symbols-outlined">search</span>
+            <input
+              type="text"
+              placeholder="Buscar..."
+              [(ngModel)]="terminoBusqueda"
+              (focus)="mostrarSugerencias = true"
+              (blur)="ocultarSugerenciasConRetraso()">
+          </div>
+          <div class="suggestions-dropdown" *ngIf="mostrarSugerencias && sugerenciasBusqueda.length > 0">
+            <div class="suggestion-item" *ngFor="let sug of sugerenciasBusqueda" (click)="irASugerencia(sug)">
+              <span class="material-symbols-outlined suggestion-icon">{{ sug.icono }}</span>
+              <div>
+                <p class="suggestion-title">{{ sug.titulo }}</p>
+                <p class="suggestion-subtitle">{{ sug.subtitulo }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notificaciones: para el admin son SOLO avisos de solicitudes pendientes/en revisión -->
+        <div class="notif-wrapper">
+          <button type="button" class="icon-btn" (click)="toggleNotificaciones()">
+            <span class="material-symbols-outlined">notifications</span>
+            <span class="badge-dot" *ngIf="notificaciones.length > 0"></span>
+          </button>
+          <div class="notif-dropdown" *ngIf="mostrarNotificaciones">
+            <div class="notif-header">Notificaciones</div>
+            <div class="notif-item" *ngFor="let n of notificaciones" (click)="irANotificacion(n)">
+              <span class="material-symbols-outlined notif-icon">{{ n.icono }}</span>
+              <div>
+                <p class="notif-text">{{ n.texto }}</p>
+                <p class="notif-time">{{ n.tiempo }}</p>
+              </div>
+            </div>
+            <div class="notif-item" *ngIf="notificaciones.length === 0">
+              <p class="notif-text">No tienes notificaciones nuevas.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ajustes: mismo destino que el ítem "Ajustes" del menú lateral -->
+        <button type="button" class="icon-btn" (click)="navegarA('ajustes')">
+          <span class="material-symbols-outlined">settings</span>
+        </button>
+      </div>
+    </header>
+
+    <section *ngIf="currentView === 'dashboard' && esAdmin" class="sub-view">
+      <div class="view-header">
+        <h2>Panel de Administración</h2>
+        <p class="subtitle">Semestre 2026-I &nbsp;•&nbsp; Escuela de Administración</p>
+      </div>
+
+      <!-- Las 4 tarjetas leen datos reales de SolicitudesService/EmpresasService
+           (ver getters en panel.component.ts), ya no son números fijos -->
+      <div class="metrics-grid">
+        <div class="metric-card metric-interactive" (click)="navegarA('solicitudes')">
+          <div class="metric-info">
+            <label>SOLICITUDES</label>
+            <h3>{{ totalSolicitudes }}</h3>
+            <p class="trend up"><span class="material-symbols-outlined">arrow_upward</span> {{ solicitudesEsteMes }} este mes</p>
+          </div>
+          <div class="metric-icon blue">
+            <span class="material-symbols-outlined">assignment_turned_in</span>
+          </div>
+        </div>
+
+        <div class="metric-card metric-interactive" (click)="navegarA('solicitudes')">
+          <div class="metric-info">
+            <label>APROBADAS</label>
+            <h3>{{ totalAprobadas }}</h3>
+            <p class="trend up">{{ porcentajeAprobadas }}% del total</p>
+          </div>
+          <div class="metric-icon green">
+            <span class="material-symbols-outlined">check_circle</span>
+          </div>
+        </div>
+
+        <div class="metric-card metric-interactive" (click)="navegarA('solicitudes')">
+          <div class="metric-info">
+            <label>EN REVISIÓN</label>
+            <h3>{{ totalEnRevision }}</h3>
+            <p class="trend orange">{{ totalPendientes }} pendientes por revisar</p>
+          </div>
+          <div class="metric-icon orange">
+            <span class="material-symbols-outlined">schedule</span>
+          </div>
+        </div>
+
+        <div class="metric-card metric-interactive" (click)="navegarA('empresas')">
+          <div class="metric-info">
+            <label>EMPRESAS ALIADAS</label>
+            <h3>{{ totalEmpresas }}</h3>
+            <p class="trend purple">{{ plazasDisponibles }} plazas disponibles</p>
+          </div>
+          <div class="metric-icon purple">
+            <span class="material-symbols-outlined">corporate_fare</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="charts-grid-layout">
+        <div class="chart-card">
+          <span class="year-indicator">2026</span>
+          <h4>Solicitudes por Mes</h4>
+          <div class="css-bar-chart">
+            <!-- Escala del eje Y calculada según el mes con más solicitudes -->
+            <div class="chart-axis-y">
+              <span *ngFor="let valor of ejeYBarras">{{ valor }}</span>
+            </div>
+            <!-- (mouseleave) también aquí, como respaldo: si el cursor sale
+                 rápido del área del gráfico sin pasar por el (mouseleave) de
+                 la barra puntual, esto igual oculta el tooltip -->
+            <div class="bars-container" (mouseleave)="ocultarTooltipMes()">
+              <!-- Una barra por cada mes que realmente tiene solicitudes registradas -->
+              <div class="bar-group" *ngFor="let d of datosPorMes" (mouseenter)="mostrarTooltipMes(d.mes, d.total, d.aprobadas, $event)" (mouseleave)="ocultarTooltipMes()">
+                <div class="bar col1" [style.height.%]="d.porcentajeTotal"></div>
+                <div class="bar col2" [style.height.%]="d.porcentajeAprobadas"></div>
+                <span class="label">{{ d.mes }}</span>
+              </div>
+              <div *ngIf="tooltipMesVisible" class="bar-chart-tooltip" [style.left]="tooltipX + 'px'" [style.top]="tooltipY + 'px'">
+                <div class="tooltip-title">{{ tooltipMesNombre }}</div>
+                <div class="tooltip-row sol"><span>Solicitudes:</span> <strong>{{ tooltipMesSolicitudes }}</strong></div>
+                <div class="tooltip-row apr"><span>Aprobadas:</span> <strong>{{ tooltipMesAprobadas }}</strong></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h4>Estado General</h4>
+          <div class="donut-container">
+            <div class="donut-chart-wrapper">
+              <!-- Un <circle> por cada estado real (Aprobadas/En Revisión/Pendientes/Rechazadas).
+                   El color y el valor del tooltip al pasar el cursor salen del mismo
+                   objeto "seg", así siempre coinciden entre sí. -->
+              <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut-svg">
+                <circle class="donut-hole" cx="21" cy="21" r="14.5" fill="#ffffff" pointer-events="none"></circle>
+                <circle
+                  *ngFor="let seg of segmentosDona"
+                  class="donut-segment"
+                  cx="21" cy="21" r="15.9154"
+                  fill="transparent"
+                  stroke-width="8"
+                  [attr.stroke]="seg.color"
+                  [attr.stroke-dasharray]="seg.dasharray"
+                  [attr.stroke-dashoffset]="seg.dashoffset"
+                  pointer-events="stroke"
+                  (mouseenter)="actualizarTooltipDona(seg.estado, seg.valor)"
+                  (mouseleave)="resetearTooltipDona()">
+                </circle>
+              </svg>
+            </div>
+            <div class="donut-legend">
+              <!-- Leyenda generada con el mismo color y valor que el segmento del círculo -->
+              <div class="legend-item" *ngFor="let seg of segmentosDona">
+                <span class="dot" [style.background]="seg.color"></span>
+                <span class="legend-label">{{ seg.estado }}</span>
+                <span class="legend-value">{{ seg.valor }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card recent-requests-card">
+        <h3>Solicitudes Recientes</h3>
+        <div class="requests-list">
+          <!-- Al hacer click se abre la ficha completa del estudiante, con
+               botones para aprobar/rechazar/dejar pendiente su solicitud -->
+          <div class="request-item" *ngFor="let sol of solicitudesRecientes" (click)="verDetalle(sol)">
+            <div class="avatar-circle font-avatar" [ngClass]="sol.css + '-avatar'">
+              {{ sol.iniciales }}
+            </div>
+            <div class="request-details">
+              <h4>{{ sol.estudiante }}</h4>
+              <p>{{ sol.empresa }}</p>
+            </div>
+            <div class="request-status">
+              <span class="status-badge" [ngClass]="sol.css">
+                <span class="material-symbols-outlined status-icon">
+                  {{ sol.css === 'approved' ? 'check_circle' : sol.css === 'review' ? 'schedule' : sol.css === 'pending' ? 'info' : 'cancel' }}
+                </span>
+                {{ sol.estado }}
+              </span>
+              <span class="request-date">{{ sol.fecha }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section *ngIf="currentView === 'solicitudes'" class="sub-view">
+      <app-solicitudes [filtroTexto]="terminoBusqueda"></app-solicitudes>
+    </section>
+
+    <section *ngIf="currentView === 'empresas'" class="sub-view">
+      <app-empresas [soloLectura]="!esAdmin" [filtroTexto]="terminoBusqueda"></app-empresas>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- USUARIOS (ADMIN) -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'usuarios' && esAdmin" class="sub-view">
+      <app-usuarios [filtroTexto]="terminoBusqueda"></app-usuarios>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- DOCENTES (ADMIN) -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'docentes' && esAdmin" class="sub-view">
+      <app-docentes [filtroTexto]="terminoBusqueda"></app-docentes>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- DOCUMENTOS DE ESTUDIANTES (ADMIN) -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'documentos-admin' && esAdmin" class="sub-view">
+      <app-documentos-admin [filtroTexto]="terminoBusqueda"></app-documentos-admin>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- REPORTES (ADMIN) -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'reportes' && esAdmin" class="sub-view">
+      <app-reportes></app-reportes>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- AJUSTES (ADMIN Y ESTUDIANTE) -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'ajustes'" class="sub-view">
+      <app-ajustes [rolUsuario]="rolUsuario" [nombreUsuario]="nombreUsuario"></app-ajustes>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- DASHBOARD ESTUDIANTE -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'dashboard' && !esAdmin" class="sub-view">
+      <div class="view-header">
+        <h2>Hola, {{ nombreUsuario || 'Estudiante' }}</h2>
+        <p class="subtitle">Semestre 2026-I &nbsp;•&nbsp; Escuela de Administración</p>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card metric-interactive" (click)="navegarA('postular')">
+          <div class="metric-info">
+            <label>ESTADO DE MI SOLICITUD</label>
+            <h3 style="font-size: 18px;">{{ miSolicitud.estado }}</h3>
+            <p class="trend orange" *ngIf="miSolicitud.estado === 'Sin registrar'">Aún no has postulado</p>
+            <p class="trend up" *ngIf="miSolicitud.estado !== 'Sin registrar'">{{ miSolicitud.empresa }}</p>
+          </div>
+          <div class="metric-icon blue">
+            <span class="material-symbols-outlined">assignment_turned_in</span>
+          </div>
+        </div>
+
+        <div class="metric-card metric-interactive" (click)="navegarA('empresas')">
+          <div class="metric-info">
+            <label>EMPRESAS ALIADAS</label>
+            <h3>{{ empresasDisponibles.length }}</h3>
+            <p class="trend purple">Con convenio activo</p>
+          </div>
+          <div class="metric-icon purple">
+            <span class="material-symbols-outlined">corporate_fare</span>
+          </div>
+        </div>
+
+        <div class="metric-card metric-interactive" (click)="navegarA('documentos')">
+          <div class="metric-info">
+            <label>DOCUMENTOS SUBIDOS</label>
+            <h3>{{ documentosSubidosCount }}/3</h3>
+            <p class="trend orange" *ngIf="documentosSubidosCount < 3">Completa tus documentos</p>
+            <p class="trend up" *ngIf="documentosSubidosCount === 3">Documentación completa</p>
+          </div>
+          <div class="metric-icon orange">
+            <span class="material-symbols-outlined">upload_file</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card recent-requests-card">
+        <h3>Mi Solicitud de Práctica</h3>
+        <div *ngIf="miSolicitud.estado === 'Sin registrar'">
+          <p class="subtitle" style="margin-bottom: 16px;">Todavía no has postulado a una práctica pre-profesional.</p>
+          <button class="submit-btn" style="width: auto; padding: 10px 20px;" (click)="navegarA('postular')">
+            Postular ahora
+          </button>
+        </div>
+        <div *ngIf="miSolicitud.estado !== 'Sin registrar'">
+          <div class="request-item" style="cursor: default;">
+            <div class="request-details">
+              <h4>{{ miSolicitud.empresa }}</h4>
+              <p>{{ miSolicitud.area }} &nbsp;•&nbsp; Inicio: {{ miSolicitud.fechaInicio }}</p>
+            </div>
+            <div class="request-status">
+              <span class="status-badge pending">{{ miSolicitud.estado }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- FORMULARIO DE POSTULACIÓN (ESTUDIANTE) -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'postular'" class="sub-view">
+      <div class="view-header">
+        <h2>Postular a una Práctica</h2>
+        <p class="subtitle">Completa el formulario para registrar tu solicitud de práctica pre-profesional.</p>
+      </div>
+
+      <div class="settings-card" style="width: 480px;">
+        <div *ngIf="miSolicitud.estado !== 'Sin registrar'" class="trend orange" style="margin-bottom: 12px;">
+          Ya tienes una solicitud en estado "{{ miSolicitud.estado }}". Puedes actualizar los datos y volver a enviarla.
+        </div>
+
+        <form (ngSubmit)="postularSolicitud()">
+          <div class="input-group">
+            <label>NOMBRE COMPLETO</label>
+            <input class="gray-input" type="text" [(ngModel)]="miSolicitud.nombre" name="nombre" placeholder="Ej: Juan Pérez Ríos" required>
+          </div>
+
+          <div class="input-group">
+            <label>EMPRESA</label>
+            <select class="gray-input" [(ngModel)]="miSolicitud.empresaId" name="empresa" required>
+              <option [ngValue]="null" disabled>Selecciona una empresa</option>
+              <option *ngFor="let emp of empresasDisponibles" [ngValue]="emp.id">{{ emp.nombre }}</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label>ÁREA / CARGO</label>
+            <input class="gray-input" type="text" [(ngModel)]="miSolicitud.area" name="area" placeholder="Ej: Marketing Digital" required>
+          </div>
+
+          <div class="input-group">
+            <label>FECHA DE INICIO</label>
+            <input class="gray-input" type="date" [(ngModel)]="miSolicitud.fechaInicio" name="fechaInicio" required>
+          </div>
+
+          <div class="input-group">
+            <label>CARTA DE MOTIVACIÓN (OPCIONAL)</label>
+            <textarea class="gray-input" rows="4" [(ngModel)]="miSolicitud.motivo" name="motivo" placeholder="Cuéntanos brevemente por qué te interesa esta práctica"></textarea>
+          </div>
+
+          <button type="submit" class="submit-btn">Enviar Solicitud</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- MIS DOCUMENTOS (ESTUDIANTE) -->
+    <!-- ========================================== -->
+    <section *ngIf="currentView === 'documentos'" class="sub-view">
+      <div class="view-header">
+        <h2>Mis Documentos</h2>
+        <p class="subtitle">Sube los documentos requeridos para tu proceso de práctica.</p>
+      </div>
+
+      <div class="card recent-requests-card">
+        <div class="request-item" style="cursor: default;">
+          <div class="request-details">
+            <h4>Curriculum Vitae (CV)</h4>
+            <p>{{ misDocumentos.cv.subido ? misDocumentos.cv.nombre : 'Ningún archivo subido' }}</p>
+          </div>
+          <div class="request-status">
+            <span class="status-badge" [ngClass]="misDocumentos.cv.subido ? 'approved' : 'pending'">
+              {{ misDocumentos.cv.subido ? 'Subido' : 'Pendiente' }}
+            </span>
+            <label class="submit-btn" style="width: auto; padding: 8px 14px; cursor: pointer;">
+              Subir
+              <input type="file" hidden (change)="onDocumentoSeleccionado($event, 'cv')">
+            </label>
+          </div>
+        </div>
+
+        <div class="request-item" style="cursor: default;">
+          <div class="request-details">
+            <h4>Certificado de Inglés</h4>
+            <p>{{ misDocumentos.certificadoIngles.subido ? misDocumentos.certificadoIngles.nombre : 'Ningún archivo subido' }}</p>
+          </div>
+          <div class="request-status">
+            <span class="status-badge" [ngClass]="misDocumentos.certificadoIngles.subido ? 'approved' : 'pending'">
+              {{ misDocumentos.certificadoIngles.subido ? 'Subido' : 'Pendiente' }}
+            </span>
+            <label class="submit-btn" style="width: auto; padding: 8px 14px; cursor: pointer;">
+              Subir
+              <input type="file" hidden (change)="onDocumentoSeleccionado($event, 'certificadoIngles')">
+            </label>
+          </div>
+        </div>
+
+        <div class="request-item" style="cursor: default;">
+          <div class="request-details">
+            <h4>Diploma / Certificado de Estudios</h4>
+            <p>{{ misDocumentos.diploma.subido ? misDocumentos.diploma.nombre : 'Ningún archivo subido' }}</p>
+          </div>
+          <div class="request-status">
+            <span class="status-badge" [ngClass]="misDocumentos.diploma.subido ? 'approved' : 'pending'">
+              {{ misDocumentos.diploma.subido ? 'Subido' : 'Pendiente' }}
+            </span>
+            <label class="submit-btn" style="width: auto; padding: 8px 14px; cursor: pointer;">
+              Subir
+              <input type="file" hidden (change)="onDocumentoSeleccionado($event, 'diploma')">
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal de detalle para la fila clickeada en "Solicitudes Recientes"
+       del dashboard del administrador (misma ficha que usa SolicitudesComponent) -->
+  <app-solicitud-detalle
+    *ngIf="solicitudSeleccionada"
+    [solicitud]="solicitudSeleccionada"
+    [esAdmin]="true"
+    (cerrar)="cerrarDetalle()"
+    (cambiarEstado)="onCambiarEstado($event)">
+  </app-solicitud-detalle>
+</div>

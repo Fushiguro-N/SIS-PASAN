@@ -1,0 +1,79 @@
+<div class="view-header-container">
+  <div>
+    <h2>Docentes</h2>
+    <p class="subtitle">{{ docentesFiltrados.length }} docentes disponibles para tutoría</p>
+  </div>
+  <button class="btn-nuevo-docente" (click)="toggleFormulario()">
+    <span class="material-symbols-outlined">{{ mostrarFormulario ? 'close' : 'person_add' }}</span>
+    {{ mostrarFormulario ? 'Cancelar' : 'Nuevo Docente' }}
+  </button>
+</div>
+
+<!-- Formulario de alta: se guarda en la base de datos real -->
+<div class="add-form-card" *ngIf="mostrarFormulario">
+  <form (ngSubmit)="agregarDocente()">
+    <div class="form-row">
+      <div class="input-group">
+        <label>CÓDIGO DEL DOCENTE</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoDocente.codigo" name="codigo" placeholder="Ej: DOC-004" required>
+      </div>
+      <div class="input-group">
+        <label>NÚMERO / TELÉFONO</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoDocente.telefono" name="telefono" placeholder="987 654 321">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="input-group">
+        <label>NOMBRES</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoDocente.nombres" name="nombres" placeholder="Ej: Roque" required>
+      </div>
+      <div class="input-group">
+        <label>APELLIDOS</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoDocente.apellidos" name="apellidos" placeholder="Ej: Sucari Mamani" required>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>CORREO DEL DOCENTE</label>
+      <input class="gray-input" type="email" [(ngModel)]="nuevoDocente.correo" name="correo" placeholder="docente@upeu.edu.pe" required>
+    </div>
+    <button type="submit" class="btn-nuevo-docente">Guardar Docente</button>
+  </form>
+</div>
+
+<div class="docentes-grid">
+  <div class="docente-card" *ngFor="let doc of docentesFiltrados">
+    <div class="docente-header">
+      <div>
+        <h4>{{ doc.nombres }} {{ doc.apellidos }}</h4>
+        <p class="docente-codigo">{{ doc.codigo }}</p>
+      </div>
+    </div>
+
+    <p class="docente-contacto">{{ doc.correo }}</p>
+    <p class="docente-contacto">{{ doc.telefono || 'Sin teléfono registrado' }}</p>
+
+    <div class="docente-asignados">
+      <label>ESTUDIANTES A SU CARGO ({{ doc.estudiantesAsignados.length }})</label>
+      <div class="asignado-item" *ngFor="let est of doc.estudiantesAsignados">
+        {{ est.nombre }} {{ est.apellido }} <span class="text-muted">({{ est.codigo }})</span>
+      </div>
+      <p *ngIf="doc.estudiantesAsignados.length === 0" class="text-muted">Todavía no tiene estudiantes asignados.</p>
+    </div>
+
+    <!-- Solo se muestran aquí los estudiantes SIN tutor asignado -->
+    <div class="asignar-row">
+      <select class="gray-input" [(ngModel)]="seleccionPorDocente[doc.id]" [name]="'select-' + doc.id">
+        <option value="" disabled selected>Selecciona un estudiante</option>
+        <option *ngFor="let est of estudiantesDisponibles" [value]="est.id">{{ est.nombre }} {{ est.apellido }} ({{ est.codigo }})</option>
+      </select>
+      <button class="btn-asignar" (click)="asignarEstudiante(doc.id)">Asignar</button>
+    </div>
+    <p *ngIf="estudiantesDisponibles.length === 0" class="text-muted" style="margin-top: 8px;">
+      No hay estudiantes disponibles (todos ya tienen un tutor asignado).
+    </p>
+  </div>
+</div>
+
+<p *ngIf="docentesFiltrados.length === 0" class="text-muted" style="padding: 24px; text-align: center;">
+  No se encontraron docentes con esa búsqueda.
+</p>

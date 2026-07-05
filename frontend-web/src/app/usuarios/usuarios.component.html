@@ -1,0 +1,80 @@
+<div class="view-header-container">
+  <div>
+    <h2>Estudiantes</h2>
+    <p class="subtitle">{{ usuariosFiltrados.length }} estudiantes registrados</p>
+  </div>
+  <button class="btn-nuevo-usuario" (click)="toggleFormulario()">
+    <span class="material-symbols-outlined">{{ mostrarFormulario ? 'close' : 'person_add' }}</span>
+    {{ mostrarFormulario ? 'Cancelar' : 'Nuevo Estudiante' }}
+  </button>
+</div>
+
+<!-- Formulario de alta: se guarda en la base de datos real -->
+<div class="add-form-card" *ngIf="mostrarFormulario">
+  <form (ngSubmit)="agregarUsuario()">
+    <div class="form-row">
+      <div class="input-group">
+        <label>CÓDIGO DE ESTUDIANTE</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoEstudiante.codigo" name="codigo" placeholder="Ej: 202512345" required>
+      </div>
+      <div class="input-group">
+        <label>CICLO</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoEstudiante.ciclo" name="ciclo" placeholder="Ej: VIII">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="input-group">
+        <label>NOMBRES</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoEstudiante.nombre" name="nombre" placeholder="Ej: Luis" required>
+      </div>
+      <div class="input-group">
+        <label>APELLIDOS</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoEstudiante.apellido" name="apellido" placeholder="Ej: Torres Vega" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="input-group">
+        <label>TELÉFONO</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevoEstudiante.telefono" name="telefono" placeholder="987 654 321">
+      </div>
+      <div class="input-group">
+        <label>CORREO INSTITUCIONAL</label>
+        <input class="gray-input" type="email" [(ngModel)]="nuevoEstudiante.correo" name="correo" placeholder="usuario@upeu.edu.pe" required>
+      </div>
+    </div>
+    <button type="submit" class="btn-nuevo-usuario">Guardar Estudiante</button>
+  </form>
+</div>
+
+<div class="table-responsive-box">
+  <table class="usuarios-table">
+    <thead>
+    <tr>
+      <th>CÓDIGO</th>
+      <th>NOMBRE COMPLETO</th>
+      <th>TELÉFONO</th>
+      <th>CORREO</th>
+      <th>CICLO</th>
+      <th>TUTOR ASIGNADO</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let u of usuariosFiltrados">
+      <td class="font-mono">{{ u.codigo }}</td>
+      <td class="text-dark">{{ u.nombre }} {{ u.apellido }}</td>
+      <td class="text-muted">{{ u.telefono || '—' }}</td>
+      <td class="text-muted">{{ u.correo }}</td>
+      <td class="text-muted">{{ u.ciclo || '—' }}</td>
+      <td>
+        <span class="rol-badge" [ngClass]="u.docenteAsignado ? 'rol-admin' : 'rol-estudiante'">
+          {{ u.docenteAsignado || 'Sin asignar' }}
+        </span>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="usuariosFiltrados.length === 0" class="text-muted" style="padding: 24px; text-align: center;">
+    No se encontraron estudiantes con esa búsqueda.
+  </p>
+</div>

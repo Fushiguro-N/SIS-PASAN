@@ -1,0 +1,33 @@
+.view-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+.view-header-container h2 { font-size: 24px; font-weight: 700; color: #0f172a; margin: 0; }
+.subtitle { font-size: 13px; color: #64748b; margin: 4px 0 0 0; }
+
+.btn-nuevo-usuario {
+  background: #1e3a8a; color: white; border: none; padding: 10px 16px;
+  border-radius: 8px; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 6px; cursor: pointer;
+}
+.btn-nuevo-usuario:hover { background: #172554; }
+
+.add-form-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px; margin-bottom: 20px; }
+.form-row { display: flex; gap: 16px; }
+.form-row .input-group { flex: 1; }
+.input-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
+.input-group label { font-size: 10px; font-weight: bold; color: #64748b; }
+.gray-input { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 6px; outline: none; width: 100%; box-sizing: border-box; }
+
+.table-responsive-box { background: white; border-radius: 16px; border: 1px solid #e2e8f0; overflow: hidden; }
+.usuarios-table { width: 100%; border-collapse: collapse; text-align: left; }
+.usuarios-table th { background: #f8fafc; padding: 14px 16px; font-size: 11px; font-weight: 600; color: #64748b; text-transform: uppercase; border-bottom: 1px solid #e2e8f0; }
+.usuarios-table td { padding: 14px 16px; border-top: 1px solid #f1f5f9; font-size: 13px; }
+.font-mono { font-family: monospace; }
+.text-dark { color: #334155; font-weight: 500; }
+.text-muted { color: #64748b; }
+
+.rol-badge { display: inline-flex; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; }
+.rol-admin { background-color: #eef2ff; color: #4338ca; }
+.rol-estudiante { background-color: #f1f5f9; color: #475569; }
