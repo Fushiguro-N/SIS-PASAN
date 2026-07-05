@@ -18,6 +18,8 @@ public class EstudianteMapper {
         entity.setCodigoEstudiantil(requestDto.getCodigoEstudiantil());
         entity.setCorreoElectronicoPersonal(requestDto.getCorreoElectronicoPersonal());
         entity.setCorreoElectronicoInstitucional(requestDto.getCorreoElectronicoInstitucional());
+        entity.setTelefono(requestDto.getTelefono());
+        entity.setCiclo(requestDto.getCiclo());
         return entity;
     }
 
@@ -26,12 +28,19 @@ public class EstudianteMapper {
         if (entity == null) return null;
 
         EstudianteResponseDTO responseDto = new EstudianteResponseDTO();
-        responseDto.setId(entity.getId()); // Mapeamos el ID generado
+        responseDto.setId(entity.getId()); //
         responseDto.setNombre(entity.getNombre());
         responseDto.setApellido(entity.getApellido());
         responseDto.setCodigoEstudiantil(entity.getCodigoEstudiantil());
         responseDto.setCorreoElectronicoPersonal(entity.getCorreoElectronicoPersonal());
         responseDto.setCorreoElectronicoInstitucional(entity.getCorreoElectronicoInstitucional());
+        responseDto.setTelefono(entity.getTelefono());
+        responseDto.setCiclo(entity.getCiclo());
+
+        if (entity.getDocente() != null) {
+            responseDto.setDocenteAsignado(entity.getDocente().getNombres() + " " + entity.getDocente().getApellidos());
+        }
+
         return responseDto;
     }
 }

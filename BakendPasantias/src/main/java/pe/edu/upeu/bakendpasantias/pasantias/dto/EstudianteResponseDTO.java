@@ -10,4 +10,9 @@ public class EstudianteResponseDTO {
     private String codigoEstudiantil;
     private String correoElectronicoPersonal;
     private String correoElectronicoInstitucional;
+    private String telefono;
+    private String ciclo;
+
+    // Nombre completo del docente-tutor asignado, o null si todavía no tiene
+    private String docenteAsignado;
 }

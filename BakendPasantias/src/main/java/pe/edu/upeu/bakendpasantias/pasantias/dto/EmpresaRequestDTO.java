@@ -12,4 +12,5 @@ public class EmpresaRequestDTO {
     private String telefono;
     private String correoElectronico;
     private String paginaWeb; // Opcional
+    private Integer totalVacantes;
 }

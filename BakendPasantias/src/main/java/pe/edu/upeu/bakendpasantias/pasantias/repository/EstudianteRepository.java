@@ -4,7 +4,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import pe.edu.upeu.bakendpasantias.pasantias.entity.EstudianteEntity;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface EstudianteRepository extends JpaRepository<EstudianteEntity, Long> {
-    // Aquí Spring Data JPA ya te regala el método .save() para registrar
+    Optional<EstudianteEntity> findByCodigoEstudiantil(String codigoEstudiantil);
+
+    // Estudiantes que todavía no tienen un docente-tutor asignado (para el
+    // selector de "Docentes" del admin)
+    List<EstudianteEntity> findByDocenteIsNull();
+
+    // Estudiantes ya asignados a un docente en particular
+    List<EstudianteEntity> findByDocenteId(Long docenteId);
 }

@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "frontend-web",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start", "--prefix", "frontend-web", "--", "--port", "4201"],
+      "port": 4201
+    },
+    {
+      "name": "backend",
+      "runtimeExecutable": "cmd",
+      "runtimeArgs": ["/c", "set JAVA_HOME=C:\\Users\\LEGION\\.jdks\\corretto-24.0.2&& BakendPasantias\\gradlew.bat -p BakendPasantias bootRun"],
+      "port": 8080
+    }
+  ]
+}
