@@ -13,4 +13,7 @@ public class SolicitudRequestDTO {
     private String area;
     private String fechaInicio;
     private String motivo;
+    // Ciclo actual del estudiante (se actualiza en su perfil al postular, ya
+    // que los estudiantes van avanzando de ciclo con el tiempo)
+    private String ciclo;
 }

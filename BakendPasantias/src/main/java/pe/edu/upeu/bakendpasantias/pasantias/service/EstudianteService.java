@@ -12,6 +12,8 @@ public interface EstudianteService {
 
     List<EstudianteResponseDTO> listarTodos();
 
+    void eliminar(Long id);
+
     // Autoregistro del estudiante desde la pantalla de login (con contraseña).
     // Si el código ya tiene una cuenta con contraseña, lanza IllegalStateException.
     EstudianteResponseDTO registrarCuenta(EstudianteRequestDTO requestDto);

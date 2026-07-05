@@ -16,4 +16,8 @@ public interface DocenteService {
 
     // Asigna al estudiante indicado como tutorado del docente indicado
     DocenteResponseDTO asignarEstudiante(Long docenteId, Long estudianteId);
+
+    // Quita al estudiante de la lista del docente (queda sin tutor y vuelve a
+    // aparecer como "disponible" para que otro docente lo asigne)
+    DocenteResponseDTO quitarEstudiante(Long docenteId, Long estudianteId);
 }

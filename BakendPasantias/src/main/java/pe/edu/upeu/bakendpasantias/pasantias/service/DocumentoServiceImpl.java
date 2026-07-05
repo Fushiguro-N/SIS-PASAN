@@ -128,6 +128,22 @@ public class DocumentoServiceImpl implements DocumentoService {
     }
 
     @Override
+    public void eliminarPorEstudiante(Long estudianteId) {
+        List<DocumentoEntity> documentos = documentoRepository.findByEstudiante_Id(estudianteId);
+        Path carpeta = Paths.get(uploadsDir);
+        for (DocumentoEntity documento : documentos) {
+            if (documento.getNombreArchivo() != null) {
+                try {
+                    Files.deleteIfExists(carpeta.resolve(documento.getNombreArchivo()));
+                } catch (IOException e) {
+                    throw new RuntimeException("No se pudo borrar el archivo del documento " + documento.getId(), e);
+                }
+            }
+        }
+        documentoRepository.deleteAll(documentos);
+    }
+
+    @Override
     public Resource cargarArchivo(Long id) {
         DocumentoEntity documento = documentoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Documento no encontrado"));

@@ -35,6 +35,12 @@ public class SolicitudServiceImpl implements SolicitudService {
             actualizarNombreSiCambio(estudiante, requestDTO.getEstudianteNombre());
         }
 
+        if (requestDTO.getCiclo() != null && !requestDTO.getCiclo().isBlank()
+                && !requestDTO.getCiclo().equals(estudiante.getCiclo())) {
+            estudiante.setCiclo(requestDTO.getCiclo());
+            estudianteRepository.save(estudiante);
+        }
+
         EmpresaEntity empresa = empresaRepository.findById(requestDTO.getEmpresaId())
                 .orElseThrow(() -> new RuntimeException("Empresa no encontrada"));
 

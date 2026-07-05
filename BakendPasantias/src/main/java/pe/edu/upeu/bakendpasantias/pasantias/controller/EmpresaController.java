@@ -28,4 +28,14 @@ public class EmpresaController {
     public ResponseEntity<List<EmpresaResponseDTO>> listar() {
         return ResponseEntity.ok(empresaService.listarTodas());
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> eliminar(@PathVariable Long id) {
+        try {
+            empresaService.eliminar(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(java.util.Map.of("mensaje", e.getMessage()));
+        }
+    }
 }

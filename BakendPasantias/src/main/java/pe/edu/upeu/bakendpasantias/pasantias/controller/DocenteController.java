@@ -39,4 +39,10 @@ public class DocenteController {
     public ResponseEntity<DocenteResponseDTO> asignarEstudiante(@PathVariable Long id, @PathVariable Long estudianteId) {
         return ResponseEntity.ok(docenteService.asignarEstudiante(id, estudianteId));
     }
+
+    // Quita al estudiante {estudianteId} de la lista del docente {id}
+    @PatchMapping("/{id}/quitar/{estudianteId}")
+    public ResponseEntity<DocenteResponseDTO> quitarEstudiante(@PathVariable Long id, @PathVariable Long estudianteId) {
+        return ResponseEntity.ok(docenteService.quitarEstudiante(id, estudianteId));
+    }
 }

@@ -33,6 +33,12 @@ public class EstudianteController {
         return ResponseEntity.ok(service.listarTodos());
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.eliminar(id);
+        return ResponseEntity.noContent().build();
+    }
+
     // Autoregistro del estudiante desde la pantalla de login (con contraseña)
     @PostMapping("/registro-cuenta")
     public ResponseEntity<?> registrarCuenta(@RequestBody EstudianteRequestDTO requestDto) {

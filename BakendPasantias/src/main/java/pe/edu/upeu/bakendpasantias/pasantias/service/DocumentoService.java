@@ -19,6 +19,10 @@ public interface DocumentoService {
 
     DocumentoResponseDTO actualizarEstado(Long id, String nuevoEstado);
 
+    // Borra los archivos en disco y las filas de documentos de un estudiante
+    // (usado antes de poder eliminar al estudiante por la restricción de clave foránea)
+    void eliminarPorEstudiante(Long estudianteId);
+
     // Carga el archivo real desde disco para que el admin pueda verlo/descargarlo
     Resource cargarArchivo(Long id);
 

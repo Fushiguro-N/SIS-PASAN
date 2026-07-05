@@ -16,4 +16,11 @@ public interface SolicitudRepository extends JpaRepository<SolicitudEntity, Long
     // Una plaza se considera ocupada mientras la solicitud no haya sido Rechazada
     // (Pendiente y En Revisión también reservan el cupo, solo Rechazado lo libera)
     long countByEmpresa_IdAndEstadoNot(Long empresaId, String estadoExcluido);
+
+    // Usado al eliminar un estudiante: hay que borrar su solicitud antes de
+    // poder borrar la fila del estudiante (restricción de clave foránea)
+    void deleteByEstudiante_Id(Long estudianteId);
+
+    // Usado al eliminar una empresa: no se permite si tiene solicitudes asociadas
+    long countByEmpresa_Id(Long empresaId);
 }

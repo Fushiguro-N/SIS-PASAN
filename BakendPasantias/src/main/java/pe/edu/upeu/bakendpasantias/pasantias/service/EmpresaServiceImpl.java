@@ -36,6 +36,16 @@ public class EmpresaServiceImpl implements EmpresaService {
         return empresaRepository.findAll().stream().map(this::conOcupadas).toList();
     }
 
+    @Override
+    public void eliminar(Long id) {
+        long solicitudesAsociadas = solicitudRepository.countByEmpresa_Id(id);
+        if (solicitudesAsociadas > 0) {
+            throw new IllegalStateException(
+                "No se puede eliminar: esta empresa tiene " + solicitudesAsociadas + " solicitud(es) asociada(s).");
+        }
+        empresaRepository.deleteById(id);
+    }
+
     // "Ocupadas" no se guarda en la BD: se cuenta en vivo cuántos estudiantes
     // tienen una solicitud hacia esta empresa que todavía puede terminar en
     // práctica (Pendiente, En Revisión o Aprobado). Solo Rechazado libera la plaza.

@@ -9,4 +9,6 @@ public interface EmpresaService {
     EmpresaResponseDTO registrarEmpresa(EmpresaRequestDTO requestDTO);
 
     List<EmpresaResponseDTO> listarTodas();
+
+    void eliminar(Long id);
 }

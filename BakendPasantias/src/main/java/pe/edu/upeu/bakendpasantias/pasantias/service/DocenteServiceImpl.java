@@ -53,6 +53,21 @@ public class DocenteServiceImpl implements DocenteService {
         return armarRespuesta(docente);
     }
 
+    @Override
+    public DocenteResponseDTO quitarEstudiante(Long docenteId, Long estudianteId) {
+        DocenteEntity docente = docenteRepository.findById(docenteId)
+                .orElseThrow(() -> new RuntimeException("Docente no encontrado"));
+        EstudianteEntity estudiante = estudianteRepository.findById(estudianteId)
+                .orElseThrow(() -> new RuntimeException("Estudiante no encontrado"));
+
+        if (estudiante.getDocente() != null && estudiante.getDocente().getId().equals(docenteId)) {
+            estudiante.setDocente(null);
+            estudianteRepository.save(estudiante);
+        }
+
+        return armarRespuesta(docente);
+    }
+
     // Arma el DTO del docente incluyendo la lista de estudiantes que ya tiene asignados
     private DocenteResponseDTO armarRespuesta(DocenteEntity entity) {
         DocenteResponseDTO dto = docenteMapper.toResponseDto(entity);

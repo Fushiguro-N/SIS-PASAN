@@ -2,11 +2,13 @@ package pe.edu.upeu.bakendpasantias.pasantias.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pe.edu.upeu.bakendpasantias.pasantias.dto.EstudianteRequestDTO;
 import pe.edu.upeu.bakendpasantias.pasantias.dto.EstudianteResponseDTO;
 import pe.edu.upeu.bakendpasantias.pasantias.entity.EstudianteEntity;
 import pe.edu.upeu.bakendpasantias.pasantias.mapper.EstudianteMapper;
 import pe.edu.upeu.bakendpasantias.pasantias.repository.EstudianteRepository;
+import pe.edu.upeu.bakendpasantias.pasantias.repository.SolicitudRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,11 +19,16 @@ public class EstudianteServiceImpl implements EstudianteService {
     private final EstudianteRepository repository;
     private final EstudianteMapper mapper;
     private final PasswordEncoder passwordEncoder;
+    private final SolicitudRepository solicitudRepository;
+    private final DocumentoService documentoService;
 
-    public EstudianteServiceImpl(EstudianteRepository repository, EstudianteMapper mapper, PasswordEncoder passwordEncoder) {
+    public EstudianteServiceImpl(EstudianteRepository repository, EstudianteMapper mapper, PasswordEncoder passwordEncoder,
+                                  SolicitudRepository solicitudRepository, DocumentoService documentoService) {
         this.repository = repository;
         this.mapper = mapper;
         this.passwordEncoder = passwordEncoder;
+        this.solicitudRepository = solicitudRepository;
+        this.documentoService = documentoService;
     }
 
     @Override
@@ -71,6 +78,18 @@ public class EstudianteServiceImpl implements EstudianteService {
 
         EstudianteEntity guardado = repository.save(entity);
         return mapper.toResponseDto(guardado);
+    }
+
+    @Override
+    @Transactional
+    public void eliminar(Long id) {
+        // Primero hay que borrar lo que depende del estudiante (restricción de
+        // clave foránea): su solicitud y sus documentos (incluidos los
+        // archivos en disco), y recién después la fila del estudiante. Todo
+        // en una sola transacción porque deleteByEstudiante_Id necesita una.
+        solicitudRepository.deleteByEstudiante_Id(id);
+        documentoService.eliminarPorEstudiante(id);
+        repository.deleteById(id);
     }
 
     @Override
