@@ -1,0 +1,93 @@
+<div class="view-header companies-header-row">
+  <div>
+    <h2>Empresas Aliadas</h2>
+    <p class="subtitle">{{ empresasMock.length }} convenios activos</p>
+  </div>
+  <button class="btn-primary-add" *ngIf="!soloLectura" (click)="toggleFormulario()">
+    <span class="material-symbols-outlined">{{ mostrarFormulario ? 'close' : 'add' }}</span>
+    {{ mostrarFormulario ? 'Cancelar' : 'Agregar Empresa' }}
+  </button>
+</div>
+
+<!-- Formulario de alta: solo visible para el admin y cuando presiona "Agregar Empresa" -->
+<div class="add-form-card" *ngIf="mostrarFormulario && !soloLectura">
+  <form (ngSubmit)="agregarEmpresa()">
+    <div class="form-row">
+      <div class="input-group">
+        <label>NOMBRE DE LA EMPRESA</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevaEmpresa.nombre" name="nombre" placeholder="Ej: Backus S.A.A." required>
+      </div>
+      <div class="input-group">
+        <label>RUC</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevaEmpresa.ruc" name="ruc" placeholder="Ej: 20100123456" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="input-group">
+        <label>RUBRO</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevaEmpresa.rubro" name="rubro" placeholder="Ej: Bebidas y Consumo" required>
+      </div>
+      <div class="input-group">
+        <label>UBICACIÓN</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevaEmpresa.ubicacion" name="ubicacion" placeholder="Ej: Lima" required>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="input-group">
+        <label>DIRECCIÓN</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevaEmpresa.direccion" name="direccion" placeholder="Ej: Av. Principal 123">
+      </div>
+      <div class="input-group">
+        <label>TELÉFONO</label>
+        <input class="gray-input" type="text" [(ngModel)]="nuevaEmpresa.telefono" name="telefono" placeholder="014567890">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="input-group">
+        <label>VACANTES</label>
+        <input class="gray-input" type="number" min="1" [(ngModel)]="nuevaEmpresa.totalVacantes" name="totalVacantes">
+      </div>
+      <div class="input-group">
+        <label>CONTACTO (CORREO)</label>
+        <input class="gray-input" type="email" [(ngModel)]="nuevaEmpresa.contacto" name="contacto" placeholder="rrhh@empresa.com">
+      </div>
+    </div>
+    <button type="submit" class="btn-primary-add">Guardar Empresa</button>
+  </form>
+</div>
+
+<div class="companies-grid">
+  <div class="company-card" *ngFor="let emp of empresasFiltradas">
+    <div class="comp-header">
+      <h4>{{ emp.nombre }}</h4>
+      <div class="comp-location-badge">
+        <span>{{ emp.ubicacion }}</span>
+        <span class="dot-status-active"></span>
+      </div>
+    </div>
+
+    <p class="comp-sub">{{ emp.rubro }}</p>
+
+    <div class="comp-occupation-container">
+      <span class="occupation-label">Ocupación</span>
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width]="emp.bar" [ngClass]="emp.colorClass"></div>
+        </div>
+        <span class="slots-counter">{{ emp.ocupadas }}/{{ emp.totalVacantes }}</span>
+      </div>
+    </div>
+
+    <p class="comp-slots-msg" [ngClass]="emp.ocupadas === emp.totalVacantes ? 'full' : ''">
+      {{ emp.libres }}
+    </p>
+
+    <div class="comp-footer-contact">
+      {{ emp.contacto }}
+    </div>
+  </div>
+</div>
+
+<p *ngIf="empresasFiltradas.length === 0" class="comp-sub" style="text-align:center; padding: 24px;">
+  No se encontraron empresas con esa búsqueda.
+</p>

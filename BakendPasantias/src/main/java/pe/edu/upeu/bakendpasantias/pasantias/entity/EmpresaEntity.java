@@ -40,4 +40,10 @@ public class EmpresaEntity {
     // Se omite nullable = false porque es opcional
     @Column(name = "pagina_web")
     private String paginaWeb;
+
+    // Cantidad total de plazas/vacantes que ofrece la empresa. Cuántas están
+    // "ocupadas" NO se guarda aquí: se calcula contando las solicitudes con
+    // estado Aprobado hacia esta empresa (ver EmpresaServiceImpl.listarTodas()).
+    @Column(name = "total_vacantes")
+    private Integer totalVacantes;
 }

@@ -1,0 +1,161 @@
+<div class="login-container">
+  <div class="login-hero">
+    <div class="brand">
+      <span class="material-symbols-outlined brand-icon">menu_book</span>
+      <div>
+        <h3>SIS-PASAN</h3>
+        <p>ADMINISTRATION</p>
+      </div>
+    </div>
+    <div class="hero-content">
+      <h1>Gestión digital de pasantías</h1>
+      <p>Plataforma institucional de la Escuela de Administración — Universidad Peruana Unión. Digitaliza, valida y realiza seguimiento de tus trámites de pasantía.</p>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-box">
+        <span class="material-symbols-outlined">school</span>
+        <h2>320+</h2>
+        <p>Estudiantes</p>
+      </div>
+      <div class="stat-box">
+        <span class="material-symbols-outlined">corporate_fare</span>
+        <h2>24</h2>
+        <p>Empresas</p>
+      </div>
+      <div class="stat-box">
+        <span class="material-symbols-outlined">check_circle</span>
+        <h2>98%</h2>
+        <p>Aprobados</p>
+      </div>
+    </div>
+    <div class="hero-footer">
+      © 2026 UPeU · Escuela de Administración · Ciclo 2026-I
+    </div>
+  </div>
+
+  <div class="login-form-panel">
+    <div class="auth-tabs">
+      <button class="tab-btn" [class.active]="isLoginTab" (click)="setActiveTab(true)">Iniciar Sesión</button>
+      <button class="tab-btn" [class.active]="!isLoginTab" (click)="setActiveTab(false)">Registrarse</button>
+    </div>
+
+    <div class="form-wrapper" *ngIf="isLoginTab">
+      <h2>Bienvenido de vuelta</h2>
+      <p class="subtitle">Ingresa tus credenciales institucionales para continuar.</p>
+
+      <div class="divider">o con credenciales</div>
+
+      <form (ngSubmit)="onSubmit()">
+        <div class="input-group">
+          <label>USUARIO O CÓDIGO</label>
+          <div class="input-icon-wrapper">
+            <span class="material-symbols-outlined">person</span>
+            <input type="text" [(ngModel)]="username" name="username" placeholder="Ej: ADMIN" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="label-row">
+            <label>CONTRASEÑA</label>
+            <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+          </div>
+          <div class="input-icon-wrapper">
+            <span class="material-symbols-outlined">lock</span>
+            <input [type]="showPassword ? 'text' : 'password'" [(ngModel)]="password" name="password" placeholder="ingrese su contraseña" required>
+            <span class="toggle-password" (click)="togglePasswordVisibility()">
+              {{ showPassword ? 'Ocultar' : 'Ver' }}
+            </span>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Ingresar al sistema <span class="material-symbols-outlined">arrow_forward</span>
+        </button>
+      </form>
+
+      <div class="test-credentials">
+        <h4>ACCESOS DE PRUEBA</h4>
+        <div class="cred-row">
+          <span>Admin</span>
+          <span class="code-font">ADMIN / admin523</span>
+        </div>
+        <div class="cred-row">
+          <span>Estudiante</span>
+          <span class="code-font">Regístrate en la pestaña "Registrarse"</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-wrapper" *ngIf="!isLoginTab">
+      <h2>Crear una cuenta</h2>
+      <p class="subtitle">Regístrate para solicitar y gestionar tus pasantías.</p>
+
+      <form (ngSubmit)="onRegisterSubmit()">
+        <div class="input-group">
+          <label>CÓDIGO UNIVERSITARIO (SERÁ TU USUARIO)</label>
+          <div class="input-icon-wrapper">
+            <span class="material-symbols-outlined">badge</span>
+            <input type="text" [(ngModel)]="regCode" name="regCode" placeholder="Ej: 202420241" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label>NOMBRES</label>
+            <div class="input-icon-wrapper">
+              <span class="material-symbols-outlined">person</span>
+              <input type="text" [(ngModel)]="regNombre" name="regNombre" placeholder="Ej: Luis" required>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>APELLIDOS</label>
+            <div class="input-icon-wrapper">
+              <span class="material-symbols-outlined">person</span>
+              <input type="text" [(ngModel)]="regApellido" name="regApellido" placeholder="Ej: Torres Vega" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="input-group">
+            <label>TELÉFONO</label>
+            <div class="input-icon-wrapper">
+              <span class="material-symbols-outlined">call</span>
+              <input type="text" [(ngModel)]="regTelefono" name="regTelefono" placeholder="987 654 321">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label>CICLO</label>
+            <div class="input-icon-wrapper">
+              <span class="material-symbols-outlined">school</span>
+              <input type="text" [(ngModel)]="regCiclo" name="regCiclo" placeholder="Ej: VIII">
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>CORREO INSTITUCIONAL</label>
+          <div class="input-icon-wrapper">
+            <span class="material-symbols-outlined">mail</span>
+            <input type="email" [(ngModel)]="regEmail" name="regEmail" placeholder="ejemplo@upeu.edu.pe" required>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>CONTRASEÑA</label>
+          <div class="input-icon-wrapper">
+            <span class="material-symbols-outlined">lock</span>
+            <input type="password" [(ngModel)]="regPassword" name="regPassword" placeholder="Crea una contraseña segura" required>
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Registrarme <span class="material-symbols-outlined">app_registration</span>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>

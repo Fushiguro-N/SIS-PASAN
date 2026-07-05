@@ -8,8 +8,8 @@ import pe.edu.upeu.bakendpasantias.pasantias.entity.EmpresaEntity;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2026-06-27T17:50:23-0500",
-    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-java-compiler-worker-9.6.1.jar, environment: Java 25.0.3 (Amazon.com Inc.)"
+    date = "2026-07-04T19:51:59-0500",
+    comments = "version: 1.5.5.Final, compiler: IncrementalProcessingEnvironment from gradle-java-compiler-worker-9.6.1.jar, environment: Java 25.0.3 (Eclipse Adoptium)"
 )
 @Component
 public class EmpresaMapperImpl implements EmpresaMapper {
@@ -30,6 +30,7 @@ public class EmpresaMapperImpl implements EmpresaMapper {
         empresaEntity.setTelefono( requestDTO.getTelefono() );
         empresaEntity.setCorreoElectronico( requestDTO.getCorreoElectronico() );
         empresaEntity.setPaginaWeb( requestDTO.getPaginaWeb() );
+        empresaEntity.setTotalVacantes( requestDTO.getTotalVacantes() );
 
         return empresaEntity;
     }
@@ -51,6 +52,7 @@ public class EmpresaMapperImpl implements EmpresaMapper {
         empresaResponseDTO.setTelefono( entity.getTelefono() );
         empresaResponseDTO.setCorreoElectronico( entity.getCorreoElectronico() );
         empresaResponseDTO.setPaginaWeb( entity.getPaginaWeb() );
+        empresaResponseDTO.setTotalVacantes( entity.getTotalVacantes() );
 
         return empresaResponseDTO;
     }

@@ -1,0 +1,13 @@
+<app-login
+  *ngIf="!isLoggedIn"
+  (loginSuccess)="onLoginSuccess($event)">
+</app-login>
+
+<app-panel
+  *ngIf="isLoggedIn"
+  [vistaActual]="currentView"
+  [rolUsuario]="userRole"
+  [nombreUsuario]="userName"
+  (cambiarVistaEvent)="changeView($event)"
+  (logoutEvent)="logout()">
+</app-panel>

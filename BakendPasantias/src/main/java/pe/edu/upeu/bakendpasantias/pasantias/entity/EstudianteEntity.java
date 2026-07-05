@@ -22,9 +22,26 @@ public class EstudianteEntity {
     @Column(name = "codigo_estudiantil", nullable = false, unique = true)
     private String codigoEstudiantil;
 
-    @Column(name = "correo_electronico_personal", nullable = false)
+    @Column(name = "correo_electronico_personal")
     private String correoElectronicoPersonal;
 
     @Column(name = "correo_electronico_institucional", nullable = false, unique = true)
     private String correoElectronicoInstitucional;
+
+    @Column(name = "telefono")
+    private String telefono;
+
+    @Column(name = "ciclo")
+    private String ciclo;
+
+    // Docente-tutor asignado para las prácticas (nulo mientras no se le asigne uno)
+    @ManyToOne
+    @JoinColumn(name = "docente_id")
+    private DocenteEntity docente;
+
+    // Contraseña (hasheada con BCrypt) para el login del estudiante. Nula
+    // mientras el estudiante no se haya registrado él mismo desde la pantalla
+    // de login (los registros que crea el admin en Estudiantes no la tienen).
+    @Column(name = "password")
+    private String password;
 }
